@@ -6,10 +6,10 @@
       "target": "es2015",
       "moduleResolution": "node",
       "sourceMap": true,
-      "declaration": false,
+      "declaration": true,
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
-      "noEmitHelpers": true,
+      "noEmitHelpers": false,
       "noEmitOnError": true,
       "skipLibCheck": true,
       "lib": [
