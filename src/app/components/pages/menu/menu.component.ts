@@ -7,6 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
 
+  menuItems: any = [
+    {"round":1,"speaker": 'John Doe'},
+    {"round":2,"speaker": 'Jane Doe'},
+    {"round":3,"speaker": 'Sue Smith'}
+  ]
+
   constructor() { }
 
   ngOnInit(): void {
