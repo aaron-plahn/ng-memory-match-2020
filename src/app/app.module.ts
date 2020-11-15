@@ -6,6 +6,8 @@ import { AppComponent } from '@src/app/app.component';
 import { HomeComponent } from '@src/app/components/pages/home/home.component';
 import { MenuComponent } from '@src/app/components/pages/menu/menu.component';
 import { GameComponent } from './components/pages/game/game.component';
+import { CardComponent } from './components/widgets/card/card.component';
+
 
 
 @NgModule({
@@ -13,7 +15,8 @@ import { GameComponent } from './components/pages/game/game.component';
     AppComponent,
     HomeComponent,
     MenuComponent,
-    GameComponent
+    GameComponent,
+    CardComponent
   ],
   imports: [
     BrowserModule,

@@ -1,2 +1,2 @@
 <h1>Round {{round}}</h1>
-<p *ngFor="let card of cards" (click)="onCardClick()">{{ card.image }}</p>
+<app-card *ngFor="let card of cards" [cardID]='card.id'></app-card>
