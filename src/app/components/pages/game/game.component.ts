@@ -11,6 +11,9 @@ import { ObservableInput } from "rxjs";
 export class GameComponent implements OnInit {
 
   round:string;
+  errorMessage:string;
+
+  selectedCards: string[] = [];
 
   cards = [
     {'id':"1","image":"dog.png"},
@@ -55,6 +58,35 @@ export class GameComponent implements OnInit {
 
   onCardClick(cardID: string): void{
     console.log(`You clicked card ${cardID}`);
+    let l = this.selectedCards.length;
+    if(l > 2) return;
+    this.selectedCards.push(cardID);
+    if(l === 0) return;
+    
+    // l === 1
+    try {
+      this.checkForMatch()
+    } catch (error) {
+      this.errorMessage = error;
+    }
+
+
+  }
+
+  checkForMatch(){
+    if(!(this.selectedCards.length === 2)) throw new Error("Invalid number of cards to compare. checkForMatch requires an array of length 2.");
+    let cardOneID = this.selectedCards.pop();
+    let cardTwoID = this.selectedCards.pop();
+    if(cardOneID === cardTwoID) return this.handleMatch(cardOneID,cardTwoID);
+    return this.resetCards([cardOneID,cardTwoID]);
+  }
+
+  handleMatch(c1:string,c2:string){
+    console.log("MATCH!");
+  }
+
+  resetCards(a: string[]){
+    console.log(`RESETTING CARDS: ${a[0]} and ${a[1]}`);
   }
 
 }
