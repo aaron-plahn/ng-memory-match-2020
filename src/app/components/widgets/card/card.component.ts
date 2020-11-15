@@ -40,7 +40,7 @@ export class CardComponent implements OnInit {
   public sendIDOnClick() {
     if(!this._active || !(this._state==CardState.FaceDown)) return;
       this.cardClicked.emit(this._cardID);
-      console.log(`You clicked on tile: ${this._cardID}`);
+      // console.log(`You clicked on tile: ${this._cardID}`);
   }
 
   constructor() { 

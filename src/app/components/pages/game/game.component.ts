@@ -53,8 +53,8 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onCardClick(): void{
-    console.log("Card clicked.")
+  onCardClick(cardID: string): void{
+    console.log(`You clicked card ${cardID}`);
   }
 
 }

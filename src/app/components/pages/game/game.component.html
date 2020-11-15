@@ -1,2 +1,2 @@
 <h1>Round {{round}}</h1>
-<app-card *ngFor="let card of cards" [cardID]='card.id'></app-card>
+<app-card *ngFor="let card of cards" [cardID]='card.id' (cardClicked)="onCardClick($event)"></app-card>
