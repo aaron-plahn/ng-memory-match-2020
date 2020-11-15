@@ -12,6 +12,21 @@ export class GameComponent implements OnInit {
 
   round:string;
 
+  cards = [
+    {'id':"1","image":"dog.png"},
+    {'id':'2',"image":"cat.png"},
+    {'id':'3',"image":"horse.png"},    
+    {'id':"4","image":"chicken.png"},
+    {'id':'5',"image":"salmon.png"},
+    {'id':'6',"image":"eagle.png"},
+    {'id':"7","image":"crow.png"},
+    {'id':'8',"image":"seagull.png"},
+    {'id':'9',"image":"goat.png"},
+    {'id':"10","image":"pig.png"},
+    {'id':'11',"image":"moose.png"},
+    {'id':'12',"image":"deer.png"}
+  ]
+
   constructor(private route: ActivatedRoute) { 
     this.route.params
     .pipe(map(params=>params['id']))
@@ -24,6 +39,10 @@ export class GameComponent implements OnInit {
    }
 
   ngOnInit(): void {
+  }
+
+  onCardClick(): void{
+    console.log("Card clicked.")
   }
 
 }
