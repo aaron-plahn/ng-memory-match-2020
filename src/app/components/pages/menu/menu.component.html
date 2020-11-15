@@ -1,5 +1,5 @@
 <h1>Menu</h1>
 <h2>Select a Round</h2>
 <div *ngFor="let round of menuItems">
-    <p>{{ round.round }} ({{ round.speaker }})</p>
+    <p><a [routerLink]="['/game',round.round]">{{ round.round }} ({{ round.speaker }}) </a></p>
 </div>
