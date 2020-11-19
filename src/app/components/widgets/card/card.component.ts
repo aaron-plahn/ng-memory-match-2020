@@ -3,8 +3,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CardState } from '@src/app/custom-types/enums/card-state';
 import { CardID } from '@src/app/custom-types/types/card-id';
 
-let testCardFront: string = "diamonds.png";
-let testCardBack: string = "dog.png";
+let testCardBack: string = "diamonds.png";
+let testCardFront: string = "dog.png";
+let testCardBlank: string = " HIDDEN  ";
 
 @Component({
   selector: 'app-card',
@@ -38,7 +39,7 @@ export class CardComponent implements OnInit {
 
   @Output() public cardClicked = new EventEmitter<CardID>();
   public sendIDsOnClick() {
-    if(!this.active || !(this._state==CardState.FaceDown)) return;
+    if(!this.active) return;
       this.cardClicked.emit({
         cardID: this._cardID,
         uniqueElementID: this._uniqueElementID});
@@ -54,13 +55,22 @@ export class CardComponent implements OnInit {
 
   handleStateChange(s: CardState){
     if(s===CardState.Hidden){
+      console.log(`updating state to hidden, state:${s}`);
       this.active = false;
-      this.visible = false;
+      this.image=testCardBlank;
+      console.log(`Current image: ${this.image}`);
       return
     } 
 
-    if(s===CardState.FaceUp) this.image=testCardFront;
-    if(s===CardState.FaceDown) this.image=testCardBack;
+    if(s===CardState.FaceUp){
+      this.image=testCardFront;
+      this.active = false;
+    } 
+    
+    if(s===CardState.FaceDown){
+      this.image=testCardBack;
+      this.active = true;
+    } 
   }
 
 }

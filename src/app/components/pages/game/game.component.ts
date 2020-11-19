@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChildren } from '@angular/core';
 import { ElementRef, QueryList} from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { map, switchMap } from "rxjs/operators";
-import { ObservableInput } from "rxjs";
+import { map, switchMap, delay } from "rxjs/operators";
+import { ObservableInput, Observable, of } from "rxjs";
 
 import { CardState } from '@src/app/custom-types/enums/card-state';
 import { CardID } from '@src/app/custom-types/types/card-id';
@@ -13,14 +13,13 @@ import { CardID } from '@src/app/custom-types/types/card-id';
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit {
-
-//  @ViewChildren('gameCards') cardElements;
   @ViewChildren('gameCards', {read: ElementRef}) cardElements: QueryList<ElementRef>;
 
   round:string;
   errorMessage:string;
 
   selectedCards: CardID[] = [];
+  loadingTime: number = 2000;
 
   cards = [
     {'id':"1","image":"dog.png","state":CardState.FaceDown},
@@ -35,18 +34,18 @@ export class GameComponent implements OnInit {
     {'id':"10","image":"pig.png","state":CardState.FaceDown},
     {'id':'11',"image":"moose.png","state":CardState.FaceDown},
     {'id':'12',"image":"deer.png","state":CardState.FaceDown},
-    {'id':"13","image":"dog.png","state":CardState.FaceDown},
-    {'id':'14',"image":"cat.png","state":CardState.FaceDown},
-    {'id':'15',"image":"horse.png","state":CardState.FaceDown},    
-    {'id':"16","image":"chicken.png","state":CardState.FaceDown},
-    {'id':'17',"image":"salmon.png","state":CardState.FaceDown},
-    {'id':'18',"image":"eagle.png","state":CardState.FaceDown},
-    {'id':"19","image":"crow.png","state":CardState.FaceDown},
-    {'id':'20',"image":"seagull.png","state":CardState.FaceDown},
-    {'id':'21',"image":"goat.png","state":CardState.FaceDown},
-    {'id':"22","image":"pig.png","state":CardState.FaceDown},
-    {'id':'23',"image":"moose.png","state":CardState.FaceDown},
-    {'id':'24',"image":"deer.png","state":CardState.FaceDown}
+    {'id':"1","image":"dog.png","state":CardState.FaceDown},
+    {'id':'2',"image":"cat.png","state":CardState.FaceDown},
+    {'id':'3',"image":"horse.png","state":CardState.FaceDown},    
+    {'id':"4","image":"chicken.png","state":CardState.FaceDown},
+    {'id':'5',"image":"salmon.png","state":CardState.FaceDown},
+    {'id':'6',"image":"eagle.png","state":CardState.FaceDown},
+    {'id':"7","image":"crow.png","state":CardState.FaceDown},
+    {'id':'8',"image":"seagull.png","state":CardState.FaceDown},
+    {'id':'9',"image":"goat.png","state":CardState.FaceDown},
+    {'id':"10","image":"pig.png","state":CardState.FaceDown},
+    {'id':'11',"image":"moose.png","state":CardState.FaceDown},
+    {'id':'12',"image":"deer.png","state":CardState.FaceDown}
   ]
 
   constructor(private route: ActivatedRoute) { 
@@ -64,16 +63,17 @@ export class GameComponent implements OnInit {
   }
 
   onCardClick(cardIDs: CardID): void{
-    let c: string = cardIDs['uniqueElementID'];
-    console.log(`You clicked card ${c}`);
-    console.log(this.cards[c].state=CardState.FaceUp);
+    let uid: string = cardIDs['uniqueElementID'];
+    let cid: string = cardIDs['cardID'];
+    this.cards[uid].state=CardState.FaceUp;
+    console.log(`You clicked card ${uid} which is of type ${cid}.`);
 
     let l = this.selectedCards.length;
-    if(l > 2) return;
+    if(l > 1) return;
     this.selectedCards.push(cardIDs);
     if(l === 0) return;
     
-    // l === 1
+    // l === 1 (length now === 2)
     try {
       this.checkForMatch()
     } catch (error) {
@@ -92,14 +92,24 @@ export class GameComponent implements OnInit {
   handleMatch(c1:string,c2:string){
     console.log("MATCH!");
     console.log(this.cardElements);
-    //this.cardElements.toArray()[c1].nativeElement.setCardState(CardState.Hidden);
-    //this.cardElements.toArray()[c2].nativeElement.setCardState(CardState.Hidden);
+    this.updateCardState(c1,CardState.Hidden);
+    this.updateCardState(c2,CardState.Hidden);
   }
 
   resetCards(c1: string,c2:string){
     console.log(`RESETTING CARDS: ${c1} and ${c2}`);
-    this.cardElements.toArray()[c1].nativeElement.setCardState(CardState.FaceDown);
-    this.cardElements.toArray()[c2].nativeElement.setCardState(CardState.FaceDown);
+    this.updateCardState(c1,CardState.FaceDown);
+    this.updateCardState(c2,CardState.FaceDown);
+  }
+
+  cardStateDelay(newState:CardState): Observable<CardState>{
+    return of(newState).pipe(delay(this.loadingTime));
+  }
+
+  updateCardState(uid:string,newState:CardState){
+    this.cardStateDelay(newState).subscribe((s:CardState)=>{
+      this.cards[uid].state = s;
+    })
   }
 
 }
